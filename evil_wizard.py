@@ -78,8 +78,48 @@ def play_game():
         print("Not valid, you are now a Brawler.")
         player = Brawler(name)
 
-    print("\nWelcome")
+    print("\nWelcome", player.name + "!")
+    print("Level:", player.level, "| HP:", player.hp)
 
+    while True:
+        print("\nWhere do you want to go?")
+        print("Type: north, south, east, west, or quit")
+        direction = input("Your move: ").lower()
+
+        if direction == "quit":
+            print("Game over. Goodbye!")
+            break
+
+        if direction in ["north", "south", "east", "west"]:
+            player.move(direction)
+        else:
+            print("That is not a real direction.")
+            continue
+
+        # Random event: talk to someone
+        if random.choice([True, False]):
+            talk = Dialogue("You meet a traveler. Talk to them?")
+            print(talk.ask())
+
+        # Random fight
+        if random.randint(1,2) == 1:
+            enemy = Character("Goblin")
+            print("\nA wild Goblin appears!")
+
+            while enemy.hp > 0 and player.hp > 0:
+                player.fight(enemy)
+                if enemy.hp <= 0:
+                    print("You beat the Goblin!")
+                    player.gain_xp(50)
+                    break
+
+                enemy.fight(player)
+                if player.hp <= 0:
+                    print("You were defeated by the Goblin...")
+                    return
+
+# Start the game
+play_game()
     #google is awesome 
 
-    
+
